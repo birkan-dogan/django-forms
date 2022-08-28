@@ -10,6 +10,10 @@ def index(request):
 # def student_page(request):
 #     return render(request, "student/student.html")
 
+
+"""
+# just django forms
+
 def student_page(request):
     # print(request.POST)
     # print(request.FILES)
@@ -26,6 +30,22 @@ def student_page(request):
             student = Student(**student_data)  # Student.objects.create(**student_data)
             student.save()
             return redirect("index")
+    context = {
+        "form":form
+    }
+    return render(request, "student/student.html", context)
+"""
+
+# with django ModelForms
+
+def student_page(request):
+    form = StudentForm()
+    if(request.method == "POST"):
+        form = StudentForm(request.POST, request.FILES)
+        if(form.is_valid()):
+            form.save()  # enough for creating new user thanks to ModelForms
+            return redirect("index")
+
     context = {
         "form":form
     }
